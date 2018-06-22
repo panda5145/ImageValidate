@@ -1,0 +1,46 @@
+<html>
+<body>
+
+<input type="file" id="fileUpload"  />
+<input type="button" value="Upload" onclick="Upload()" /><br>
+<img id="imgfile">
+<script type="text/javascript">
+function Upload() {
+    
+    var fileUpload = document.getElementById("fileUpload");
+	var givenFile=JSON.stringify(fileUpload.files[0].type);
+	try{if (givenFile.match(/image/g)== "image"){	
+		if (FileReader && fileUpload.files && fileUpload.files.length) {
+			var fr = new FileReader();
+			fr.onload = function() {
+				var image = new Image();
+				image.src = fr.result;
+				
+				if(image.width < 600) {
+					alert(`Width less than 600px! Upload another photo.(Given Width:${image.width})`)
+					fileUpload.value = "";
+				}
+				else if(image.width > 600){
+					alert(`Width more than 600px! Please crop the photo.(Given Width:${image.width})`)
+					fileUpload.value = "";
+				}
+				else {
+					document.getElementById("imgfile").src = fr.result;
+				}
+			}
+			fr.readAsDataURL(fileUpload.files[0]);
+		}
+	}
+	else {
+	alert("Not an Image File"); 
+	}}
+	catch(e){
+	console.log("error");
+	}
+	
+	
+	
+	}
+</script>
+</body>
+</html>
